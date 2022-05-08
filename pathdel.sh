@@ -1,0 +1,1 @@
+export PATH=`echo $PATH | tr ":" "\n" | grep -F -v -x "$1*" | tr "\n" ":"`

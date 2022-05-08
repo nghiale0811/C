@@ -1,0 +1,43 @@
+1. We can get the pid by call the getpid() function inside the conditional statement if(p == 0)
+
+2. For all the child processes except #2, we can kill the process by calling "kill(getpid(), SIGKILL);" inside the function after we forked the process
+For the #2 process, we must call "kill(getpid(), SIGKILL);" inside the conditional statement if(p == 0)
+
+----Code----:
+
+int main(void)
+{
+  int i;
+  pid_t p;
+
+  for (i = 0; i < N; i++) {
+    p = fork();
+    if (p == 0) {
+      close(0);
+      close(1);
+      close(2);
+      if (i == 2) {
+       setsid();
+      }
+      int s = getpid();
+      kill(s, SIGKILL);
+      sleep(D);
+      return 0;
+      }
+  }
+  return 0;
+}
+
+----------
+To do this in shell script:
+1. We compile and run the C program
+gcc imtrash.c -o imtrash
+./imtrash
+
+2. We find the PID of the running processes in this program by using the command:
+ps aux | grep username | grep imtrash | tail -6 | head -5
+(we put our username after the first grep)
+The PID is on the second column
+
+3. To kill a running process, we call 
+kill <PID of the process>
